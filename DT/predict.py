@@ -8,7 +8,7 @@ from pathlib import Path
 path_root = Path(__file__).parents[1]
 import sys
 sys.path.append(str(path_root))
-weights_name = "DT_tri__0__20240503_170502"
+weights_name = "DT_tri__0__20240503_172032"
 path_weights = path_root / 'weights' / weights_name
 
 from DT.utils.ckpt_manager import CheckpointManager
