@@ -6,7 +6,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 from dt_model import GPTConfig, TrainConfig, GPT
 from parse_and_writer import parse_args_and_writer, logs
 from DT.dataset import DatasetBuilder
-from utils.ckpt_manager import CheckpointManager
+from DT.utils.ckpt_manager import CheckpointManager
 from tqdm import tqdm
 from DT.eval import Evaluator
 import numpy as np
@@ -56,7 +56,6 @@ def train():
     # logs.update(['eval_score', 'epoch'], [np.mean(score), ep+1])
     # logs.writer_tensorboard(writer, state.step)
     ckpt_manager.save(ep+1, state, vars(args))
-  ckpt_manager.close()
   writer.close()
   if args.wandb:
     import wandb

@@ -53,7 +53,7 @@ class Evaluator:
       print(f"epoch {i} with score {score[-1]}, timestep {len(self.s)}")
     return score
 
-from utils.ckpt_manager import CheckpointManager
+from DT.utils.ckpt_manager_old import CheckpointManager
 from dt_model import GPTConfig, GPT, TrainConfig
 class LoadToEvaluate:
   def __init__(self, path_weights, load_step, auto_shoot: bool = True, show: bool = False, path_video_save_dir: str = None):

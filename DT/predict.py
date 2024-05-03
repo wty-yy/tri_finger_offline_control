@@ -12,13 +12,13 @@ weights_name = "DT_tri__0__20240503_172032/010.npy"
 path_weights = path_root / 'weights' / weights_name
 
 try:
-  from DT.utils.ckpt_manager import CheckpointManager
+  from DT.utils.ckpt_manager_old import CheckpointManager
 except:
   ...
 from DT.dt_model import GPTConfig, GPT, TrainConfig
 class Predictor:
   def __init__(self, path_weights=path_weights, load_step=None, rtg=20, seed=42):
-    self.rtg, self.seed = rtg, seed
+    self.base_rtg, self.seed = rtg, seed
     self._load_model(path_weights, load_step)
     self.n_step = self.model.cfg.n_token // 3
     self.action_dim = self.model.cfg.act_dim
@@ -62,7 +62,7 @@ class Predictor:
   def reset(self):
     self.rng = jax.random.PRNGKey(self.seed)
     self.time_count = 1
-    self.s, self.a, self.rtg, self.timestep = [], [np.zeros(self.action_dim)], [self.rtg], [1]
+    self.s, self.a, self.rtg, self.timestep = [], [np.zeros(self.action_dim)], [self.base_rtg], [1]
     self.score = 0
   
   def __call__(self, state, last_reward=None, deterministic=False):
