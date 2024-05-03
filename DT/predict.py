@@ -8,7 +8,7 @@ from pathlib import Path
 path_root = Path(__file__).parents[1]
 import sys
 sys.path.append(str(path_root))
-weights_name = "DT_tri__0__20240503_172032"
+weights_name = "DT_tri__0__20240503_172032/010.npy"
 path_weights = path_root / 'weights' / weights_name
 
 from DT.utils.ckpt_manager import CheckpointManager
@@ -23,10 +23,13 @@ class Predictor:
     self.reset()
 
   def _load_model(self, path_weights, load_step):
-    ckpt_mngr = CheckpointManager(path_weights)
-    if load_step is None:
-      load_step = int(sorted(path_weights.glob('*'))[-1].name)
-    load_info = ckpt_mngr.restore(load_step)
+    if path_weights.suffix == '.npy':
+      load_info = np.load(path_weights, allow_pickle=True).item()
+    else:
+      ckpt_mngr = CheckpointManager(path_weights)
+      if load_step is None:
+        load_step = int(sorted(path_weights.glob('*'))[-1].stem)
+      load_info = ckpt_mngr.restore(load_step)
     params, cfg = load_info['params'], load_info['config']
     self.model = GPT(cfg=GPTConfig(**cfg))
     self.model.create_fns()
@@ -73,6 +76,7 @@ class Predictor:
 
 if __name__ == '__main__':
   predictor = Predictor(rtg=1.5)
+  np.random.seed(True)
   for i in range(10):
     s = np.random.rand(41)
     a = predictor(s, 0.1)
