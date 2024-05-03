@@ -11,9 +11,11 @@ sys.path.append(str(path_root))
 weights_name = "DT_tri__0__20240503_172032/010.npy"
 path_weights = path_root / 'weights' / weights_name
 
-from DT.utils.ckpt_manager import CheckpointManager
+try:
+  from DT.utils.ckpt_manager import CheckpointManager
+except:
+  ...
 from DT.dt_model import GPTConfig, GPT, TrainConfig
-from DT.eval import Evaluator
 class Predictor:
   def __init__(self, path_weights=path_weights, load_step=None, rtg=20, seed=42):
     self.rtg, self.seed = rtg, seed
@@ -30,6 +32,7 @@ class Predictor:
       if load_step is None:
         load_step = int(sorted(path_weights.glob('*'))[-1].stem)
       load_info = ckpt_mngr.restore(load_step)
+    # np.save(path_weights, load_info, allow_pickle=True)
     params, cfg = load_info['params'], load_info['config']
     self.model = GPT(cfg=GPTConfig(**cfg))
     self.model.create_fns()
