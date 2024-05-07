@@ -7,7 +7,7 @@ def str2bool(x): return x in ['yes', 'y', 'True', '1']
 def parse_args_and_writer(input_args=None, with_writer=True) -> tuple[argparse.Namespace, SummaryWriter]:
   parser = argparse.ArgumentParser()
   ### Gobal ###
-  parser.add_argument("--name", type=str, default="DT_tri")
+  parser.add_argument("--name", type=str, default="DT_tri_v4")
   parser.add_argument("--seed", type=int, default=0)
   parser.add_argument("--wandb", type=str2bool, default=False, const=True, nargs='?')
   ### Training ###
@@ -22,7 +22,7 @@ def parse_args_and_writer(input_args=None, with_writer=True) -> tuple[argparse.N
   parser.add_argument("--weight-decay", type=float, default=1e-4)
   parser.add_argument("--rtg", type=float, default=1.5, help="Return To GO")
   ### Dataset ###
-  parser.add_argument("--dataset-name", type=str, default="mydata_v3_418363_notimeout.npy", help="The dataset name in directory ROOT/dataset/")
+  parser.add_argument("--dataset-name", type=str, default="mydata_v4_1367861.npy", help="The dataset name in directory ROOT/dataset/")
   parser.add_argument("--num-workers", type=int, default=4)
 
   args = parser.parse_args(input_args)

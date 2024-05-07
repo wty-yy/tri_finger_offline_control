@@ -8,8 +8,6 @@ from parse_and_writer import parse_args_and_writer, logs
 from DT.dataset import DatasetBuilder
 from DT.utils.ckpt_manager import CheckpointManager
 from tqdm import tqdm
-from DT.eval import Evaluator
-import numpy as np
 
 def train():
   ### Parse augment and TF Writer ###

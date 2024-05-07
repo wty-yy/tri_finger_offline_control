@@ -17,6 +17,7 @@ class DatasetBuilder:
     data = self.data = {}
     if Path(self.path_dataset).suffix == '.npy':
       self.replay = replay = np.load(str(self.path_dataset), allow_pickle=True).item()
+      replay['rewards'] = replay['rewards'].reshape(-1)
     elif Path(self.path_dataset).suffix in ['.h5', '.hdf5']:
       self.replay = replay = h5py.File(str(self.path_dataset))
     replay = {k: np.array(v) for k, v in replay.items()}
@@ -50,7 +51,7 @@ class DatasetBuilder:
         data[k] = np.array(new_done_idx, np.int32)
     episode_len = self.data['timestep'][self.data['done_idx']]
     data['info'] = f"\
-Max rtg: {max(data['rtg'])}, Mean rtg: {np.mean(data['rtg'])}, Min episode len: {min(episode_len)}, Max timestep: {max(episode_len)},\
+Max rtg: {max(data['rtg'])}, Mean rtg: {np.mean(data['rtg'])}, Min rtg: {min(data['rtg'])}, Min episode len: {min(episode_len)}, Max timestep: {max(episode_len)},\
 Vocab size: {data['action'].shape[-1]}, Total steps: {len(data['obs'])}"
     print(data['info'])
   
@@ -101,7 +102,7 @@ class StateActionReturnDataset(Dataset):
     return s, a, rtg, timestep
   
 if __name__ == '__main__':
-  path_dataset = str(Path(__file__).parents[1] / "dataset/mydata_v3_418363_notimeout.npy")
+  path_dataset = str(Path(__file__).parents[1] / "dataset/mydata_v4_1367861.npy")
   ds_builder = DatasetBuilder(path_dataset, n_step=5)
   ds_builder.debug()
   ds = ds_builder.get_dataset(5, 128)
